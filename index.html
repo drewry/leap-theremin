@@ -1,0 +1,21 @@
+<html>
+  <head>
+    <title>Leap Theremin</title>
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.0/themes/base/jquery-ui.css" />
+    <script src="http://code.jquery.com/jquery-1.8.3.js"></script>
+    <script src="http://code.jquery.com/ui/1.10.0/jquery-ui.js"></script>
+    <link rel="stylesheet" type="text/css" href="style.css">
+  </head>
+  <body>
+    <script src="script.js"></script>
+    <button id="play">Play</button>
+    <button id="stop" class="active">Stop</button>
+    <span id="frequency">900.00 Hz</span>
+    <button class="wave" value="0">Sine wave</button>
+    <button class="wave" value="1">Square wave</button>
+    <button class="wave" value="2">Sawtooth wave</button>
+    <button class="wave" value="3">Triangle wave</button>
+    <span class="label">Intensity:</span> <div id="slider"></div>
+    <input type="hidden" id="intensity" value="2" />
+  </body>
+</html>
