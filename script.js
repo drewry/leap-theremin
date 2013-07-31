@@ -1,7 +1,8 @@
 var state = 0,
 	ws,
 	context,
-	oscillator;
+	oscillator,
+	gainer;
 
 // Support both the WebSocket and MozWebSocket objects
 if ((typeof(WebSocket) == 'undefined') &&
@@ -24,15 +25,24 @@ function init() {
 		var obj = JSON.parse(event.data);
 		if(state > 0) {
 			if(obj.pointables.length > 0) {
-				var value = obj.pointables[0].tipPosition[1];
+				var value = obj.pointables[0].tipPosition[0];
 				var intensity = $('#intensity').val();
-				var modified = (575 - value) * intensity;
+				var modified = (350 - value) * intensity;
 				if( modified <= 0 ) {
 					modified = 5;
 				}
 				modified = modified.toFixed(2);
 
+				var gainval = (obj.pointables[0].tipPosition[1] - 25) / 600;
+				if (gainval < 0){
+					gainval = 0;
+				}
+				if (gainval > 1){
+					gainval = 1;
+				}
+
 				oscillator.frequency.value = modified;
+				gainer.gain.value = gainval;
 				$('#frequency').html(modified + ' Hz');
 			}			
 		}
@@ -67,8 +77,10 @@ $(function() {
     	state = 1;
 		context = new webkitAudioContext(),
 		oscillator = context.createOscillator()
-		oscillator.connect(context.destination);
-		oscillator.frequency.value = 900;
+		gainer = context.createGain();
+		gainer.connect(context.destination);
+		oscillator.connect(gainer);
+		oscillator.frequency.value = 901;
 		oscillator.start(0);
 
 		$(this).addClass('active');
